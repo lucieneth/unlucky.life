@@ -1,0 +1,724 @@
+/* Paths are relative to THIS file, not to the page - the stylesheet moved into
+   /styles/ but these kept the root-relative spelling, so all three resolved to
+   /styles/other/fonts/ and 404'd. The page rendered on Arial and Impact. */
+/* Three real weights, so nothing here is ever a synthesised faux bold. The
+   regular was already the right cut - it sets HANDLING at 492.2px/100px
+   against Rockstar's ArtDecoRegular at the same 492.2 - and Medium and Bold
+   came from the album store, which serves the whole family.
+
+   They are registered by their actual weight. The store's own theme maps
+   Medium onto `bold` and Bold onto 900, which works for its markup but means
+   font-weight:500 there gets you the Regular; here 500 gets you the Medium. */
+@font-face { font-family:'GTAArtDeco'; src:url('../other/fonts/gta-art-deco.woff') format('woff'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'GTAArtDeco'; src:url('../other/fonts/gta-art-deco-medium.woff2') format('woff2'); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:'GTAArtDeco'; src:url('../other/fonts/gta-art-deco-bold.woff2') format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
+/* Declared but currently unused - the clock moved to Pricedown. An unused
+   @font-face costs nothing: the file is only fetched once something renders
+   with it. */
+@font-face { font-family:'GTAArtDeco Condensed'; src:url('../other/fonts/gta-art-deco-condensed.woff') format('woff'); font-weight:700; font-style:normal; font-display:swap; }
+@font-face { font-family:'Pricedown'; src:url('../other/fonts/pricedown.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
+
+/* ============================================================
+   unlucky.life - "The Album" treatment.
+   Palette taken from the GTA VI album packaging: royal blue and
+   faded pink, two tones only, with white outlined type over them.
+   Base layer = the Daylight scene. body.sunset = the night scene.
+   ============================================================ */
+
+:root{
+  color-scheme:light;
+  --mono:'Cascadia Code','SFMono-Regular',Consolas,monospace;
+  --deco:'GTAArtDeco',Arial,sans-serif;
+  --display:'GTAArtDeco Condensed',Impact,sans-serif;
+  --price:'Pricedown',Impact,sans-serif;
+
+  /* Daylight used to sit at the very top of the tone scale - background around
+     75% luminance with the ink tiers left pale, which put --faint at 2.6:1 and
+     --pink at 2.9:1 against it. The scene now sits a band lower and the ink
+     tiers sit a band darker, so every one of them clears 4.5:1 on the lightest
+     part of the gradient. Deepening the scene alone would have made that worse,
+     not better: the two moves only work together. */
+  --ink:#141a42;--ink-2:#27305f;--muted:#3b4578;--faint:#4a5384;
+  --pink:#9c2755;--hot:#b32a60;--blue:#33438f;
+  --line:#6d7cbb54;--rule:#7886c266;
+  --card-bg:#fdf4f8cc;--card-line:#8e9ccf8a;--card-gloss:#fffffff2;--card-shadow:0 12px 34px #2a35702e;
+  --chip-bg:#fdf4f8c4;--chip-line:#93a0d18f;
+  --glow-pink:#c3517566;
+  --presence-color:#6b7296;
+  --sparkle:#fff6fa;--sparkle-glow:#d2578a;
+  --lb-abyss:#c6c3e4;--lb-deep:#d3b4cf;--lb-violet:#d9aec8;
+  --lb-orchid:#c993b6;--lb-blush:#b67c9f;--lb-sun:#dfb5cb;--lb-aqua:#9dabdd;
+  --lb-sheen:.08;--lb-halo:0 1px 10px #f0d6e2e6,0 0 3px #f0d6e2bf;
+  --dot-ring:#fbeaf1;
+  /* Display type is set the way the GTA VI logo sets it: flat white face, dark
+     rim, soft drop. No fill gradient - a ramp inside the letters fought the
+     scene behind them whichever way it was tuned. */
+  --type-face:#ffffff;--type-rim:#2a1145;--type-rim-hot:#b32a60;
+  --type-drop:0 3px 0 #2a114540,0 12px 26px #2a11455c;
+  /* The outer edge is one gradient for both scenes on purpose - it belongs to
+     the lockup, not to the scenery, so it stays put when the scene flips. */
+  --type-edge:linear-gradient(180deg,#ff3d9a 0%,#ff5f7e 46%,#ff9a3c 100%);
+  --tilt-x:0px;--tilt-y:0px;
+}
+
+body.sunset{
+  color-scheme:dark;
+  /* The ink tiers used to be violet all the way down - #efe9fb through
+     #ab9fdb - which is the album palette applied to running text, and it read
+     as dark grey rather than as white. Rockstar set their pages in white and
+     neutral grey and keep the colour for accents, so the tint comes out of the
+     tiers here and stays in --pink, --hot and --blue. Each step also goes up a
+     little: --faint clears 8.2:1 on the deepest part of the scene now against
+     7.4:1 before, and the whole ramp looks heavier at the same weight, which
+     is half of why the face looked thin. */
+  --ink:#ffffff;--ink-2:#eaeef7;--muted:#c8cfe0;--faint:#a7b0c6;
+  --pink:#ffb2c6;--hot:#ff93b1;--blue:#7f95e0;
+  --line:#9fb0e03d;--rule:#93a4d44d;
+  --card-line:#9fb2e04d;--card-gloss:#ffffff1f;--card-shadow:0 16px 44px #060a2666;
+  --chip-bg:#ffffff0f;--chip-line:#9fb0e03d;
+  --glow-pink:#ffb2c64d;
+  --sparkle:#ffffff;--sparkle-glow:#ffb2c6;
+  --lb-abyss:#070a1e;--lb-deep:#111838;--lb-violet:#28305e;
+  --lb-orchid:#56336f;--lb-blush:#a86a86;--lb-sun:#c08ea1;--lb-aqua:#6376b4;
+  --lb-sheen:.4;--lb-halo:0 1px 10px #060a26e0,0 0 3px #060a26b3;
+  --dot-ring:#161d47;--card-bg:#161d47b8;
+  /* The rim stays a plum rather than going black: against this scene's navy a
+     black rim disappears and the letters lose their edge. */
+  --type-rim:#231150;--type-rim-hot:#ff93b1;
+  --type-drop:0 2px 0 #05081f4d,0 11px 26px #05081f80;
+}
+
+/* ---------- base ---------- */
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{
+  margin:0;color:var(--ink);isolation:isolate;
+  font:14px/1.65 var(--deco);
+  background:#e3c2d6;
+  background-image:linear-gradient(183deg,#e5b8ce 0%,#e6c3d8 38%,#d9c5e0 72%,#c6c8e6 100%);
+  background-attachment:fixed;
+}
+body.sunset{
+  background:#0f1638;
+  background-image:
+    radial-gradient(ellipse 110% 64% at 50% 12%,#2b4aa87a,transparent 64%),
+    radial-gradient(ellipse 96% 54% at 50% 102%,#3f5fc266,transparent 62%),
+    linear-gradient(183deg,#0a0f2c 0%,#121a45 46%,#1a2559 100%);
+  background-attachment:fixed;
+}
+/* A white bloom in the top right. It is nearly free on the dark scene and adds
+   depth there; on daylight it landed on an already-bright gradient and was a
+   straight glare source, so that one is dialled down. */
+body:before{
+  content:'';position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:radial-gradient(ellipse 62% 42% at 72% 6%,#ffffff12,transparent 62%);
+}
+body.sunset:before{background:radial-gradient(ellipse 62% 42% at 72% 6%,#ffffff21,transparent 62%)}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+button:disabled{cursor:default}
+button,a{-webkit-tap-highlight-color:transparent}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--hot);outline-offset:4px;border-radius:3px}
+::selection{background:#ffb2c6;color:#1b2350}
+body.sunset ::selection{background:#ffb2c6;color:#141c46}
+[hidden]{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:fixed;top:-100px;left:20px;padding:12px 20px;background:#1b2350;color:#ffe3ec;z-index:100;border-radius:8px}
+.skip:focus{top:12px}
+.icon{height:18px;width:18px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.reading-progress{position:fixed;inset:0 0 auto;height:2px;z-index:50;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,#3a4da0,#ffb2c6 52%,#ffe3ec)}
+.page{width:min(880px,calc(100% - 64px));margin:0 auto;position:relative;z-index:1}
+
+/* ---------- display type ---------- */
+
+/* paint-order is what makes this work: without it the stroke centres on the
+   glyph edge and half of it eats inward, which on a face this heavy closes up
+   the counters. With it the rim sits entirely outside and the white face stays
+   the full letterform. Browsers that ignore paint-order still get an outline,
+   just a slightly leaner face - no fallback needed.
+
+   Stroke and spacing are in em so the same rule serves the 86px name and the
+   42px clock, and rides the responsive font sizes without a second set of
+   numbers.
+
+   The tracking is set so the rims almost touch, the way the logo packs its
+   lockup, rather than so they clear each other comfortably. An outward stroke
+   eats .062em of the gap on each side, so this is well under what looks right
+   for the bare letterforms - read it as a rim-to-rim measurement, not a
+   letter-to-letter one. */
+.chrome{
+  position:relative;
+  color:var(--type-face);
+  -webkit-text-stroke:.062em var(--type-rim);
+  paint-order:stroke fill;
+  letter-spacing:.004em;
+}
+/* The coloured outer edge. One stroke per element is all CSS gives, and the
+   logo has two rims, so the outer one is a second copy of the glyphs sitting
+   behind the real text with a fatter stroke. The gradient reaches the stroke
+   because background-clip:text clips to the text's whole ink - face AND stroke
+   - which is the one behaviour this entire construction rests on.
+   The real text then covers all of it but the outermost .023em.
+
+   The drop lives here rather than on .chrome because this is the backmost
+   layer: cast from the fat silhouette it is the shadow of the whole lockup,
+   and on .chrome it painted over the coloured edge and muddied it. */
+.chrome:before{
+  content:attr(data-text);
+  /* Shrink-to-fit on the text means this box IS the advance width, and the
+     stroke hangs a tenth of an em outside it at each end. Chrome paints a
+     background-clip:text background only within the box, so the outermost
+     glyph edges came back unpainted and the lockup had a top and a bottom rim
+     but no sides. The padding buys the stroke somewhere to land and the
+     matching negative left puts the glyphs back where they were - horizontal
+     only, because a 180deg ramp does not care how wide its box is, while
+     padding it vertically would resample the whole gradient. */
+  position:absolute;left:-.14em;top:0;z-index:-1;padding:0 .14em;
+  -webkit-text-stroke:.1em transparent;
+  background-image:var(--type-edge);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:var(--type-drop);
+  pointer-events:none;
+}
+
+/* ---------- liquid-filled background ---------- */
+
+/* The viewport is the vessel: one slab of slowly moving tinted liquid
+   behind the whole page. Shape, radius and palette all live here in CSS -
+   liquid-bubbles.js reads them back off the element and feeds them to both
+   the shader and the bubble physics, so this block stays the single source
+   of truth for how the panel looks. */
+.bubbles{
+  position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;
+  overflow:hidden;isolation:isolate;border-radius:0;
+  /* Deliberately transparent. The liquid canvas runs below full opacity, so
+     what it blends onto is this page's own background gradient - that is what
+     keeps text contrast from collapsing wherever a pale pool drifts under it,
+     and it is the same relationship the old translucent blobs had. */
+  background-color:transparent;
+}
+.lb__canvas{
+  position:absolute;inset:0;display:block;width:100%;height:100%;
+  border-radius:inherit;pointer-events:none;z-index:0;
+}
+/* A thin CSS sheen over the canvas. Doing the glass edge here rather than in
+   the shader means it survives the fallback below. */
+.lb__glass{
+  position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:1;
+  opacity:var(--lb-sheen,.4);
+  background:linear-gradient(180deg,#ffffff1a 0%,#ffffff05 14%,#ffffff00 38%);
+  box-shadow:inset 0 1px 0 #ffffff30,inset 0 0 70px #ffffff0b;
+}
+/* No WebGL, or a device that could not keep up: same palette, plain CSS. */
+.lb__fb{
+  position:absolute;inset:0;border-radius:inherit;overflow:hidden;
+  pointer-events:none;z-index:0;opacity:.6;
+  background:
+    radial-gradient(90% 60% at 18% 12%,var(--lb-blush),transparent 58%),
+    radial-gradient(70% 55% at 82% 26%,var(--lb-orchid),transparent 62%),
+    linear-gradient(175deg,var(--lb-violet) 0%,var(--lb-deep) 46%,var(--lb-abyss) 100%);
+}
+/* The tuned config draws no bubbles, so the fallback must not either.
+   Drop this rule if you ever raise bubbles.opacity above 0. */
+.lb__fb i{display:none}
+
+/* The clock labels are 9-10px, letter-spaced, coloured --faint, and sit
+   straight on the background with no card behind them - the weakest text on
+   the page. Measured worst-case contrast there was 1.0:1 even before the
+   liquid existed, because the old pink blobs washed them out too.
+
+   A halo in the scene's own background colour is invisible over the dark
+   parts of the liquid and does the work only where a pale pool drifts
+   underneath. .chrome is excluded because it carries its own rim and drop,
+   not because a shadow would break it - that was true of the old clipped
+   gradient, whose glyphs were transparent. Delete this rule to go back to
+   flat text. */
+.clock-location,#timeZone,.clock-label{text-shadow:var(--lb-halo)}
+
+/* ---------- sparkle glints ---------- */
+
+.glint{position:absolute;pointer-events:none;color:var(--sparkle);filter:drop-shadow(0 0 7px var(--sparkle-glow));animation:twinkle 3.6s ease-in-out infinite;z-index:2}
+.glint svg{width:100%;height:100%;display:block;fill:currentColor;stroke:none}
+.glint.g1{width:26px;height:26px;top:-10px;left:-18px;animation-delay:-.4s}
+.glint.g2{width:15px;height:15px;top:24px;right:12%;animation-delay:-1.7s}
+.glint.g3{width:19px;height:19px;bottom:2px;left:42%;animation-delay:-2.6s}
+@keyframes twinkle{0%,100%{opacity:.18;transform:scale(.55) rotate(-12deg)}50%{opacity:1;transform:scale(1) rotate(28deg)}}
+
+/* ---------- masthead ---------- */
+
+/* This was a 10px label at either end of 114px of nothing. Both ends now sit
+   in the chip idiom the footer controls and the cards already wear, so the bar
+   holds two objects instead of two pieces of floating text, and the wordmark
+   is up at a size where the face has some body to it. */
+.masthead{height:114px;display:flex;justify-content:space-between;align-items:center;gap:20px;position:relative}
+/* The rule carries the scene's own ramp the full width instead of being a flat
+   hairline with a 120px accent stuck on its front. */
+.masthead:before{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,var(--hot) 0,var(--rule) 24%,var(--line) 70%,transparent)}
+.masthead:after{content:'';position:absolute;left:0;bottom:0;width:186px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--hot),transparent)}
+.site-name{display:flex;gap:13px;align-items:center;font:14px var(--deco);letter-spacing:.155em;text-transform:uppercase;color:var(--ink)}
+/* The plate is the same 1px chip the presence symbols and the scene toggle
+   wear. The tilt the sparkle used to carry permanently moved onto hover - a
+   crooked icon sitting inside a straight plate just reads as a mistake. */
+.home-symbol{
+  width:34px;height:34px;flex-shrink:0;padding:9px;
+  border:1px solid var(--chip-line);border-radius:11px;background:var(--chip-bg);
+  box-shadow:inset 0 1px 0 #ffffff2e;
+  color:var(--hot);fill:currentColor;stroke:none;
+  transition:border-color .25s,rotate .35s,box-shadow .25s;
+}
+.site-name:hover .home-symbol{border-color:var(--hot);rotate:-12deg;box-shadow:inset 0 1px 0 #ffffff2e,0 0 16px var(--glow-pink)}
+.site-name:hover .site-tld{color:var(--hot)}
+.site-tld{color:var(--pink);transition:color .25s}
+.path-slash{color:var(--faint);letter-spacing:0;font-size:16px;opacity:.65}
+.command-trigger{display:flex;align-items:center;gap:10px;border:1px solid var(--chip-line);background:var(--chip-bg);border-radius:999px;color:var(--muted);font:10px var(--deco);letter-spacing:.2em;text-transform:uppercase;padding:9px 9px 9px 17px;transition:color .25s,border-color .25s,box-shadow .25s}
+.command-trigger:hover{color:var(--hot);border-color:var(--hot);box-shadow:0 0 0 3px var(--glow-pink)}
+kbd{font:10px var(--mono);letter-spacing:0;text-transform:none;border:1px solid var(--chip-line);border-bottom-width:2px;padding:3px 5px;border-radius:4px;background:var(--chip-bg);color:var(--muted);white-space:nowrap}
+/* Inside the pill there is already a border around the kbd, so it drops its
+   own and leans on a tint instead. */
+.command-trigger kbd{border:0;background:#ffffff14;padding:4px 8px;border-radius:999px;color:inherit}
+
+/* ---------- layout ---------- */
+
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 274px;gap:56px;padding:44px 0 38px}
+.profile-column,.now-column{min-width:0}
+
+/* ---------- intro / the cover ---------- */
+
+.intro{position:relative}
+.eyebrow{font:11px/1.5 var(--deco);letter-spacing:.42em;text-transform:uppercase;color:var(--muted);margin:0 0 18px;display:flex;align-items:center;gap:10px}
+.eyebrow .spark{width:12px;height:12px;color:var(--hot);fill:currentColor;stroke:none;filter:drop-shadow(0 0 5px var(--glow-pink))}
+.intro h1{font-weight:400;line-height:1;display:flex;flex-direction:column;gap:7px;margin:0 0 17px;position:relative}
+.greeting{font:400 11px/1 var(--deco);letter-spacing:.4em;text-transform:uppercase;color:var(--muted);padding-left:2px}
+/* The visitor's IP, dropped in by the ipdata greeting. It gets the mono face
+   and its own tracking: .46em is right for three uppercase words and turns a
+   dotted quad into scattered digits. */
+.greeting em{font-style:normal;font-family:var(--mono);letter-spacing:.1em;color:var(--pink)}
+.name{font:400 86px/.92 var(--price);position:relative;width:max-content;max-width:100%}
+/* The glow goes on the backmost layer so it spreads from the coloured edge and
+   lights the whole lockup. Recolouring the dark rim, which is what this used to
+   do, now just fights the edge that sits right outside it. */
+.name:before{transition:text-shadow .35s ease}
+.name:hover:before{text-shadow:var(--type-drop),0 0 30px var(--glow-pink)}
+/* The gloss the live cards get, clipped to the letterforms instead of to a
+   rounded box: a third copy of the text carrying the highlight through
+   background-clip:text, parked off one side and slid across on hover. Same
+   112deg, same 300% band, same .9s as .live-card:after, so the two read as one
+   gesture.
+
+   White on a face that is already #ffffff would be nothing, so the highlight
+   is clipped to the whole ink rather than to the face: a transparent stroke at
+   .chrome's own .062em, which background-clip:text then fills along with the
+   letterform. The band takes the dark rim out as it crosses, and letters
+   briefly blowing out at their edges is what a specular actually looks like.
+
+   text-shadow has to go or the scene's drop trails a second copy of the band
+   behind the first. */
+.name:after{
+  content:attr(data-text);
+  /* Padded and pulled back for the same reason .chrome:before is: the stroke
+     this one carries hangs outside a shrink-to-fit box too, and without the
+     room the band would skip the outer edge of the first and last glyph. */
+  position:absolute;left:-.1em;top:0;padding:0 .1em;pointer-events:none;
+  -webkit-text-stroke:.062em transparent;paint-order:stroke fill;
+  text-shadow:none;
+  background-image:linear-gradient(112deg,transparent 43%,#ffffff9e 47%,#fff 50%,#ffffff9e 53%,transparent 57%);
+  background-size:300% 100%;background-position:135% 0;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  transition:background-position .9s ease;
+}
+.name:hover:after{background-position:-35% 0}
+.deck{display:flex;align-items:center;gap:13px;margin:0 0 6px}
+.deck:before{content:'';width:34px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--pink),var(--blue))}
+.identity-meta{display:flex;align-items:center;gap:13px;font:11px/1.5 var(--mono);color:var(--muted);letter-spacing:.06em}
+.identity-meta>span+span{border-left:1px solid var(--rule);padding-left:13px}
+.lead{font-size:19px;line-height:1.55;letter-spacing:-.015em;margin:24px 0 11px;color:var(--ink)}
+.bio{margin:0;color:var(--ink-2);font-size:13.5px;line-height:1.8;max-width:452px;opacity:.88}
+
+/* ---------- section headings ---------- */
+
+.section-heading{font:400 11px/1.4 var(--deco);letter-spacing:.36em;text-transform:uppercase;color:var(--muted);display:flex;gap:12px;align-items:center;margin:0 0 15px;white-space:nowrap}
+.section-number{font:10px var(--mono);letter-spacing:.08em;color:var(--pink)}
+.heading-line{flex:1;height:1px;background:linear-gradient(90deg,var(--rule),transparent);margin-left:1px}
+
+/* ---------- around the internet ---------- */
+
+.elsewhere{margin-top:34px}
+.socials{display:flex;flex-direction:column;gap:2px}
+.socials a{position:relative;display:flex;align-items:center;gap:11px;padding:10px 10px 10px 9px;font-size:13.5px;border-radius:8px;border:1px solid transparent;overflow:hidden;transition:border-color .25s,transform .25s}
+.socials a:before{content:'';position:absolute;inset:0;border-radius:inherit;opacity:0;transition:opacity .3s;background:linear-gradient(100deg,#ffb2c62e,#7f95e01a 58%,transparent)}
+.socials a>*{position:relative}
+.socials .icon{width:15px;height:15px;color:var(--pink)}
+.socials .handle{margin-left:auto;font:10.5px var(--mono);letter-spacing:.04em;color:var(--faint)}
+.socials .arrow{height:12px;width:12px;margin-left:12px;color:var(--faint);transition:transform .25s,color .25s}
+.socials a:hover{border-color:var(--card-line);transform:translateX(3px)}
+.socials a:hover:before{opacity:1}
+.socials a:hover .icon{color:var(--hot);filter:drop-shadow(0 0 6px var(--glow-pink))}
+.socials a:hover .arrow{transform:translate(2px,-2px);color:var(--hot)}
+.contact-line{display:flex;align-items:center;gap:10px;margin-top:17px;padding-left:9px}
+.contact-arrow{font:15px var(--mono);color:var(--pink)}
+.email{font:12px var(--mono);letter-spacing:.02em;color:var(--pink);transition:color .2s}
+.email:hover{color:var(--hot);text-decoration:underline;text-underline-offset:4px}
+.copy-email{display:flex;align-items:center;gap:5px;border:0;background:transparent;padding:4px;color:var(--faint);transition:color .2s}
+.copy-email .icon{height:12px;width:12px}
+.copy-label{font:10px var(--deco);letter-spacing:.18em;text-transform:uppercase}
+.copy-email:hover{color:var(--hot)}
+
+/* ---------- interests ---------- */
+
+.interests{margin-top:34px}
+.interest-list{display:flex;flex-wrap:wrap;gap:7px}
+.interest-list span{font:10px/1.3 var(--deco);letter-spacing:.15em;text-transform:uppercase;padding:7px 11px;border:1px solid var(--chip-line);border-radius:999px;background:var(--chip-bg);color:var(--ink-2);transition:transform .2s,border-color .2s,color .2s}
+.interest-list span:hover{transform:translateY(-2px);border-color:var(--hot);color:var(--hot)}
+.interest-list span:nth-child(4n+1){background:linear-gradient(120deg,#ffb2c62e,#ffb2c60a);border-color:#ffb2c659}
+.interest-list span:nth-child(4n+2){background:linear-gradient(120deg,#7f95e02e,#7f95e00a);border-color:#7f95e059}
+.interest-list span:nth-child(4n+3){background:linear-gradient(120deg,#e8799e26,#e8799e0a);border-color:#e8799e4d}
+.interest-list span:nth-child(4n+4){background:linear-gradient(120deg,#5f79d026,#5f79d00a);border-color:#5f79d04d}
+
+/* ---------- now column ---------- */
+
+.now-column{padding-top:2px}
+.local-clock{padding:0 0 24px;margin-bottom:28px;border-bottom:1px solid var(--line);position:relative}
+.local-clock:after{content:'';position:absolute;left:0;bottom:-1px;width:70px;height:1px;background:linear-gradient(90deg,var(--hot),transparent)}
+.clock-location{display:flex;align-items:center;gap:7px;font:11px var(--deco);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.clock-location>.icon{width:12px;height:12px;color:var(--pink)}
+#localDate{margin-left:auto;font:9.5px var(--mono);letter-spacing:.04em;color:var(--faint);text-transform:none}
+.clock-time{display:flex;align-items:baseline;gap:9px;margin-top:15px}
+/* Pricedown, same face as the name - the logo this page borrows from sets its
+   whole lockup in one face, and the condensed cut read thin beside it. No
+   letter-spacing here on purpose: .chrome owns it, so the tracking that the
+   rim needs is set in exactly one place. tabular-nums is kept for the case
+   where the face carries the feature; without it a clock reflows every minute. */
+.clock-time time{font:400 42px/1 var(--price);font-variant-numeric:tabular-nums}
+#timeZone{font:10px var(--mono);color:var(--faint)}
+.clock-label{font:10px var(--deco);letter-spacing:.16em;text-transform:uppercase;margin-left:auto;color:var(--faint)}
+.clock-track{display:flex;justify-content:space-between;align-items:center;height:11px;margin-top:15px;gap:3px}
+.clock-track i{width:1px;height:4px;background:var(--rule);transition:height .3s,background .3s}
+.clock-track i:nth-child(4n+1){height:8px}
+.clock-track i.current{background:var(--hot);height:11px;width:2px;border-radius:1px;box-shadow:0 0 8px var(--hot)}
+
+/* ---------- live cards ---------- */
+
+.live-desk{display:grid;grid-template-columns:1fr;gap:12px}
+.live-card{
+  position:relative;min-width:0;display:flex;flex-direction:column;
+  padding:15px;border:1px solid var(--card-line);border-radius:13px;overflow:hidden;
+  background-color:var(--card-bg);
+  box-shadow:inset 0 1px 0 #ffffff2e,var(--card-shadow);
+  transition:transform .28s,border-color .28s,box-shadow .28s;
+}
+.live-card:after{
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(112deg,transparent 41%,var(--card-gloss) 50%,transparent 59%);
+  background-size:300% 100%;background-position:135% 0;opacity:.5;
+  transition:background-position .9s ease;
+}
+.live-card>*{position:relative;z-index:1}
+.live-card:hover{transform:translateY(-4px);border-color:var(--pink);box-shadow:inset 0 1px 0 #ffffff3d,0 18px 42px #3a4da029}
+.live-card:hover:after{background-position:-35% 0}
+.discord-card{background-image:linear-gradient(140deg,#7f95e045,#3a4da01f)}
+.xbox-card{background-image:linear-gradient(140deg,#6fc2a840,#3a4da01f)}
+.music-card{background-image:linear-gradient(140deg,#ffa8c159,#d0567f1f)}
+.fitness-card{background-image:linear-gradient(140deg,#9fb0ea4d,#3a4da01f)}
+body.sunset .discord-card{background-image:linear-gradient(140deg,#7f95e066,#1b2455a6)}
+body.sunset .xbox-card{background-image:linear-gradient(140deg,#6fc2a85c,#1b2a52a6)}
+body.sunset .music-card{background-image:linear-gradient(140deg,#ffb2c666,#2a2055a6)}
+body.sunset .fitness-card{background-image:linear-gradient(140deg,#9fb0ea59,#241d55a6)}
+
+.card-label{display:flex;align-items:center;gap:7px;color:var(--muted);font:10px/1.5 var(--deco);letter-spacing:.19em;text-transform:uppercase}
+.card-label>.icon{width:13px;height:13px;color:var(--pink)}
+.mini-state{margin-left:auto;font:9.5px var(--mono);letter-spacing:.02em;text-transform:none;max-width:106px;line-height:1.35;text-align:right;color:var(--faint)}
+.presence-main{display:flex;align-items:center;gap:12px;margin:16px 0 8px}
+.presence-symbol{width:38px;height:38px;flex:0 0 38px;border-radius:11px;background:var(--chip-bg);border:1px solid var(--chip-line);display:grid;place-items:center;color:var(--ink-2);position:relative;box-shadow:inset 0 1px 0 #ffffff33}
+.presence-symbol .icon{width:22px;height:22px}
+/* Avatar / hra prekryje pictogram, kdyz je co ukazat. Zadny overflow:hidden -
+   tecka stavu schvalne preteka za roh a orez by ji ukrojil; obrazek se orizne
+   sam pres vlastni border-radius. */
+.presence-symbol img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit}
+.presence-dot{position:absolute;width:10px;height:10px;bottom:-2px;right:-2px;border:2px solid var(--dot-ring);border-radius:50%;background:var(--presence-color);box-shadow:0 0 8px var(--presence-color)}
+.live-card h3{font:400 16px/1.3 var(--deco);letter-spacing:.01em;margin:0;color:var(--ink);overflow-wrap:anywhere}
+.presence-main p,.track-info p{font:10.5px/1.5 var(--mono);color:var(--muted);margin:5px 0 0;overflow-wrap:anywhere}
+.live-description{font:10.5px/1.55 var(--mono);color:var(--faint);margin:0;overflow-wrap:anywhere}
+.card-footer{border-top:1px solid var(--rule);padding-top:10px;margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:8px;font:10px/1.4 var(--deco);letter-spacing:.13em;text-transform:uppercase;color:var(--faint)}
+.card-footer .icon{width:12px;height:12px}
+
+.music-main{display:flex;align-items:center;gap:12px;margin:16px 0}
+.cover{width:44px;height:44px;flex:0 0 44px;border:1px solid var(--chip-line);border-radius:9px;background:linear-gradient(140deg,#ffb2c6,#5f79d0);position:relative;display:grid;place-items:center;overflow:hidden;color:#fff4fa;box-shadow:inset 0 1px 0 #ffffff59,0 4px 14px #3a4da02e}
+.cover .icon{width:22px;height:22px}
+.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.track-info{min-width:0}
+.equalizer{display:flex;gap:2px;align-items:flex-end;height:12px;margin-left:auto}
+.equalizer i{height:3px;width:2px;border-radius:1px;background:var(--hot);box-shadow:0 0 6px var(--glow-pink)}
+.is-playing .equalizer i{animation:equalize .6s ease-in-out infinite alternate}
+.equalizer i:nth-child(2n){animation-delay:-.3s}
+.equalizer i:nth-child(3n){animation-delay:-.5s}
+.music-link{color:var(--pink);transition:color .2s}
+.music-link:hover{color:var(--hot)}
+
+.card-meta{margin-left:auto;font:9px var(--mono);letter-spacing:.02em;text-transform:none;color:var(--faint);max-width:106px;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.xbox-card .presence-symbol{color:#2f8f6d}
+body.sunset .xbox-card .presence-symbol{color:#8fe3bd}
+
+.activity-marker{color:var(--hot);font-size:14px;line-height:1;filter:drop-shadow(0 0 6px var(--glow-pink))}
+.today-label{margin-left:auto;font-size:9px}
+.fitness-main{display:flex;gap:15px;align-items:center;margin:14px 0}
+.rings{width:76px;height:76px;flex:0 0 76px;transform:rotate(-90deg)}
+.rings circle{fill:none;stroke-width:9}
+.ring-track{stroke:currentColor;opacity:.22}
+.ring-value{stroke:currentColor;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:100;transition:stroke-dashoffset 1s;filter:drop-shadow(0 0 4px currentColor)}
+.ring-value[style*="stroke-dashoffset: 100"]{visibility:hidden}
+.fitness-main dl{margin:0;flex:1}
+.fitness-main dl>div{display:flex;justify-content:space-between;gap:6px;margin:7px 0;align-items:baseline}
+.fitness-main dt{font:9px var(--deco);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.fitness-main dd{font:10px var(--mono);margin:0;color:var(--ink-2);white-space:nowrap}
+.data-note{font:9px/1.8 var(--deco);letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin:16px 0 0}
+.data-note>span{color:var(--pink);margin-right:5px;letter-spacing:0}
+
+/* ---------- footer ---------- */
+
+.footer{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:20px 0 34px;border-top:1px solid var(--line);font:10px/1.5 var(--deco);letter-spacing:.17em;text-transform:uppercase;color:var(--faint);position:relative}
+.footer:after{content:'';position:absolute;left:0;top:-1px;width:100px;height:1px;background:linear-gradient(90deg,var(--hot),transparent)}
+.footer-dot{padding:0 9px;color:var(--rule)}
+.footer-controls{display:flex;gap:12px;align-items:center}
+.footer a{transition:color .2s}
+.footer a:hover{color:var(--hot)}
+.scene-mode{display:flex;align-items:center;gap:7px;background:var(--chip-bg);border:1px solid var(--chip-line);border-radius:999px;padding:7px 13px;font:10px var(--deco);letter-spacing:.17em;text-transform:uppercase;color:var(--muted);transition:color .2s,border-color .2s}
+.scene-mode .icon{height:12px;width:12px;color:var(--pink)}
+.scene-mode:hover{color:var(--hot);border-color:var(--hot)}
+.motion{width:27px;height:27px;border:1px solid var(--chip-line);border-radius:999px;display:grid;place-items:center;background:var(--chip-bg);color:var(--muted);padding:0;transition:color .2s,border-color .2s}
+.motion .icon{width:11px;height:11px}
+.motion:hover{color:var(--hot);border-color:var(--hot)}
+
+/* ---------- toast + palette ---------- */
+
+.toast{position:fixed;bottom:25px;left:50%;translate:-50% 8px;background:#161d47f2;border:1px solid #ffb2c666;color:#ffe3ec;padding:12px 18px;border-radius:999px;font:10px var(--deco);letter-spacing:.18em;text-transform:uppercase;box-shadow:0 14px 40px #060a2666;z-index:100;opacity:0;pointer-events:none;transition:opacity .2s,translate .2s;max-width:calc(100vw - 30px);text-align:center}
+.toast.show{opacity:1;translate:-50% 0}
+
+.command-palette{padding:18px;border:1px solid #9fb0e04d;border-radius:16px;color:#eee9fb;width:min(470px,calc(100% - 32px));max-height:calc(100svh - 60px);overflow:auto;background:linear-gradient(150deg,#1e2a5e,#111740 55%,#25306a);box-shadow:0 34px 110px #04071f80,inset 0 1px 0 #ffffff1f}
+.command-palette::backdrop{background:#070c26a6;backdrop-filter:blur(6px)}
+.palette-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}
+.palette-header h2{font:9px var(--deco);letter-spacing:.42em;text-transform:uppercase;margin:0;color:#c3cdf2}
+.palette-header button{border:0;background:none;padding:0}
+.command-palette input{width:100%;font:13px var(--mono);padding:12px;border:1px solid #9fb0e04d;background:#0a1036a6;color:#eee9fb;border-radius:9px;margin-bottom:11px}
+.command-palette input::placeholder{color:#9aa6d6}
+.palette-options{display:flex;flex-direction:column;gap:3px}
+.palette-options a,.palette-options button{border:0;background:none;display:flex;align-items:center;justify-content:space-between;gap:15px;text-align:left;padding:12px 11px;border-radius:9px;font:11px var(--deco);letter-spacing:.14em;text-transform:uppercase;color:#eee9fb;transition:background .2s,color .2s}
+.palette-options span{color:#a7b3e0;font:9px var(--mono);letter-spacing:.02em;text-transform:none}
+.palette-options a:hover,.palette-options button:hover,.palette-options a:focus,.palette-options button:focus{background:linear-gradient(100deg,#ffb2c63d,#7f95e02e);color:#fff;outline:none}
+.palette-footer{display:flex;gap:18px;border-top:1px solid #9fb0e033;margin-top:13px;padding-top:12px;font:9px var(--deco);letter-spacing:.2em;text-transform:uppercase;color:#a7b3e0}
+.palette-empty{font:11px var(--deco);letter-spacing:.14em;text-transform:uppercase;padding:12px 11px;color:#a7b3e0}
+
+body.sunset .page{text-shadow:0 1px 3px #070b26b8}
+/* .chrome is left out of the reset that used to sit here: it now sets its own
+   text-shadow, and this selector outranks it, so killing the shadow here also
+   killed the drop under the display type. */
+
+/* ---------- weight tiers ---------- */
+
+/* Rockstar leave the Regular cut almost unused. Sampling their VI page: every
+   run of body copy, every nav item, button and label comes back ArtDecoMedium
+   500 at 9-13px and again at 29px, with ArtDecoBold 700 kept for the 47px
+   headings. Ours was Regular throughout, which is what read as thin - the face
+   was never narrow, it measures identically to the one they serve.
+
+   Labels go a step past their 500, to 700. Our tracking is far wider than
+   theirs - half an em on .eyebrow against their near-normal spacing - and
+   tracking that open thins the apparent stroke, so matching their weight
+   number would not match their density.
+
+   Both tiers are stated once here rather than threaded through thirty-five
+   font: shorthands, and both MUST stay below every rule they name: those use
+   the shorthand, which resets weight, and carry equal specificity, so the
+   later declaration is what decides. Keep this block last in the file. */
+
+/* labels, small caps and headings */
+.site-name,.command-trigger,.eyebrow,.greeting,.section-heading,
+.clock-location,.clock-label,.card-label,.card-footer,.copy-label,
+.interest-list span,.data-note,.footer,.scene-mode,.fitness-main dt,
+.live-card h3,.toast,.palette-header h2,.palette-footer,.palette-empty,
+.palette-options a,.palette-options button{font-weight:700}
+
+/* running copy, and the mono tier with it - Cascadia carries a real 500;
+   where it falls back to Consolas, which ships only 400 and 700, 500 simply
+   resolves to the regular rather than faking anything. */
+body,.lead,.bio,.identity-meta,.section-number,.socials .handle,
+.contact-arrow,.email,#localDate,#timeZone,.mini-state,
+.presence-main p,.track-info p,.live-description,.card-meta,
+.fitness-main dd,kbd,.command-palette input,
+.palette-options span{font-weight:500}
+
+/* ---------- motion ---------- */
+
+/* Both entrances are held while the overlay is up. They used to run behind it
+   and be spent by the time it lifted, so the page was simply there. fill-mode
+   is already 'both' on each of them, which parks a paused animation on its own
+   first frame - nothing here has to know what that frame looks like.
+
+   The class is put on by VI.js rather than shipped in the markup: if the
+   script never arrives there is nothing to take it off again, and holding an
+   entrance forever means an intro at opacity 0. */
+html.ul-hold .entrance,html.ul-hold .reveal.visible{animation-play-state:paused}
+.entrance{animation:arrive .75s both cubic-bezier(.2,.7,.3,1)}
+.delay-1{animation-delay:.07s}
+.delay-2{animation-delay:.14s}
+.delay-3{animation-delay:.21s}
+@keyframes arrive{from{opacity:0;transform:translateY(11px)}to{opacity:1;transform:none}}
+@keyframes equalize{to{height:12px}}
+.motion-off *,.motion-off *:before,.motion-off *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+.motion-off .glint{opacity:.7;transform:none}
+
+/* ---------- responsive ---------- */
+
+@media(min-height:1000px) and (min-width:1000px){.masthead{height:142px}.layout{padding-top:50px;padding-bottom:46px}}
+
+@media(max-width:850px){
+  .page{width:calc(100% - 48px)}
+  .layout{gap:34px;grid-template-columns:minmax(0,1fr) 250px}
+  .name{font-size:72px}
+  .lead{font-size:17px}
+  .bio{font-size:12px}
+  .wide-only{display:none}
+  .made-personal,.footer-dot{display:none}
+  .copy-label{display:none}
+  .fitness-main{gap:10px}
+  .clock-time time{font-size:36px}
+}
+
+@media(max-width:650px){
+  .page{width:calc(100% - 40px);max-width:478px}
+  .masthead{height:84px}
+  .site-name{font-size:12px;gap:10px}
+  .home-symbol{width:30px;height:30px;padding:8px;border-radius:9px}
+  /* Label gone, so the pill is just the shortcut and wants even padding. */
+  .command-trigger>span{display:none}
+  .command-trigger{padding:9px}
+  .layout{grid-template-columns:1fr;gap:38px;padding-top:32px;padding-bottom:28px}
+  .eyebrow{margin-bottom:16px;letter-spacing:.42em}
+  .greeting{font-size:11px;letter-spacing:.4em}
+  .name{font-size:78px}
+  .lead{font-size:19px;max-width:390px;margin-top:22px}
+  .bio{font-size:14px;line-height:1.8}
+  .section-heading{font-size:10px;margin-bottom:14px}
+  .elsewhere{margin-top:32px}
+  .socials a{font-size:13.5px;padding-block:12px}
+  .socials .handle{font-size:10px}
+  .socials .icon{width:17px;height:17px}
+  .email{font-size:11px}
+  .copy-label{display:block}
+  .interests{margin-top:32px}
+  .interest-list span{font-size:10px}
+  .now-column{padding-top:0}
+  .local-clock{padding-bottom:22px;margin-bottom:25px}
+  .clock-time time{font-size:44px}
+  .clock-location{font-size:10px}
+  .live-card{padding:18px}
+  .card-label{font-size:9px}
+  .mini-state,.card-meta{font-size:9px;max-width:130px}
+  .presence-symbol{width:44px;height:44px;flex-basis:44px}
+  .live-card h3{font-size:18px}
+  .presence-main p,.track-info p,.live-description{font-size:11.5px}
+  .cover{width:50px;height:50px;flex-basis:50px}
+  .fitness-main{gap:24px;margin:14px 0}
+  .rings{height:92px;width:92px;flex-basis:92px}
+  .fitness-main dt{font-size:9px}
+  .fitness-main dd{font-size:12px}
+  .footer{flex-direction:column;align-items:flex-start;gap:14px;padding-block:17px 28px}
+  .footer-controls{gap:10px}
+}
+
+@media(max-width:370px){
+  .page{width:calc(100% - 32px)}
+  .name{font-size:64px}
+  .greeting{font-size:10px;letter-spacing:.34em}
+  .identity-meta{font-size:9px;gap:9px}
+  .identity-meta>span+span{padding-left:9px}
+  .lead{font-size:18px}
+  .email{font-size:10px}
+  .contact-line{gap:7px}
+  .interest-list{gap:6px}
+  .interest-list span{font-size:9px;padding:6px 9px}
+}
+
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.glint{opacity:.7;transform:none}}
+
+/* ---------- pointer drift + reveal ---------- */
+
+.glint{translate:var(--tilt-x,0px) var(--tilt-y,0px)}
+@keyframes rise{from{opacity:0;translate:0 13px}to{opacity:1;translate:0 0}}
+.js-motion .reveal{opacity:0}
+.js-motion .reveal.visible{opacity:1;animation:rise .7s both cubic-bezier(.2,.7,.3,1)}
+
+/* ---------- first-load sweep ---------- */
+
+/* Rockstar's GTA VI loader, rebuilt on this site's own mark. The outline never
+   draws itself in and never fills up: it is static from the first frame, and a
+   narrow band of Vice colour travels through the strokes and leaves the same
+   neutral outline behind it. The band is one gradient rect translating across a
+   static mask cut from those strokes, which keeps the colour inside the letters
+   and keeps transform the only property that animates. */
+
+/* Deep navy in both scenes. This is a pre-site moment - the scene class is not
+   settled until VI.js runs, so keying the overlay to it would mean a chance of
+   the backdrop flipping under the mark - and a light outline wants a dark field
+   under it either way. The colour is the top of body.sunset's own gradient. */
+.ul-loader{
+  position:fixed;inset:0;z-index:9999;
+  /* min() because 100dvw counts the scrollbar's width, and a box that overhangs
+     the viewport pushes the mark off centre; 100% of a fixed element resolves
+     against the viewport without it. Where dv* units are missing the whole
+     declaration drops and inset:0 still covers the viewport.
+
+     The page keeps its scrollbar the whole time the overlay is up. Taking it
+     away with overflow:hidden is what was sliding the entire layout sideways
+     when the overlay left, so the scroll lock is a handful of listeners in
+     VI.js instead - they stop the page moving without touching its width. */
+  width:min(100dvw,100%);height:min(100dvh,100%);
+  display:grid;place-items:center;
+  background:#0a0f2c;
+  /* The band is --hot and --blue, pinned to the values the night scene gives
+     them rather than written as var(--hot)/var(--blue). The overlay always
+     stands on the navy above, and the daylight pair - #b32a60 and #33438f -
+     are both dark enough to vanish against it; they would also swap under the
+     mark the moment VI.js applied a daylight preference. */
+  --ul-hot:#ff93b1;
+  --ul-blue:#7f95e0;
+}
+/* ~82px wide on a phone, ~122px on a desktop - the mark sits inside a square
+   viewBox, so the box is a little larger than the letters it holds.
+
+   overflow:visible is not cosmetic. The band rect crosses the viewBox edge at
+   both ends of its travel, and Chrome leaks the clipped edge as a hard 1px
+   line through the mask - a coloured bar standing beside the mark for part of
+   every sweep. Dropping the viewport clip drops the seam with it; the mask
+   region is still pinned to the 480 box, so nothing can paint outside it. */
+.ul-mark{display:block;width:clamp(98px,26vmin,146px);height:auto;overflow:visible}
+/* The resting state, not the subject. */
+.ul-outline{stroke:#f2eeff;stroke-opacity:.42}
+/* Measured along the band's own axis, not the page's: rotated -22deg the mark
+   spans -4.8 to 495.9, so x=-210 w=190 parks the band clear of the near corner
+   and 710 carries its trailing end past the far one. 82% of 2.1s is a 1.72s
+   crossing,
+   and the hold to 100% is the beat between sweeps. The curve is a hair off
+   linear on purpose - it reads as momentum rather than as easing. A proper
+   ease-in-out here (.45,.05,.55,.95 was the first try) crawls the band in,
+   fires it across the middle and crawls it out again, which is the generic
+   CSS-demo tell. Control points that sit close to linear's own 1/3 and 2/3
+   keep the speed inside about +/-15% of constant. */
+.ul-band{animation:ul-sweep 2.1s cubic-bezier(.33,.28,.67,.72) infinite;will-change:transform}
+@keyframes ul-sweep{0%{transform:translateX(0)}82%,100%{transform:translateX(710px)}}
+
+/* The exit is the one animation that still has to run when motion is off,
+   otherwise the overlay never leaves and the page stays locked behind it. Both
+   kill-switches above are !important, so this has to be too - two classes
+   out-specify their single-class and universal selectors. */
+.ul-loader.is-leaving{pointer-events:none;animation:ul-leave .42s cubic-bezier(.4,0,.2,1) forwards!important}
+@keyframes ul-leave{to{opacity:0}}
+
+/* Reduced motion keeps the static outline and drops the travelling band. The
+   blanket rules already stop it moving, and parked it sits left of the mark
+   where the mask hides it - this is not leaving that to inference. */
+@media(prefers-reduced-motion:reduce){.ul-sweep{display:none}}
+.motion-off .ul-sweep{display:none}

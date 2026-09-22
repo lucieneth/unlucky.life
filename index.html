@@ -1,12 +1,15 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
+
 <head>
-    <!-- Required Meta Tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#0b0726">
+    <title>unlucky.life</title>
+    <meta name="description"
+        content="I'm Lucien aka unlucky and this is my little corner of the internet.">
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Little website for personal projects :)">
     <meta name="keywords" content="Lucien Pauer, Lucien, Unlucky, unlucky life, unlucky.life, life, unlucky web, unluckylife">
     <meta name="author" content="Lucien">
 
@@ -23,111 +26,390 @@
     <meta name="twitter:image" content="./images/favicon.webp">
 
     <!-- Mobile redirect -->
-    <script type="text/javascript" src="javascript/redirection-mobile.js"></script><script type="text/javascript">// <![CDATA[
-        SA.redirection_mobile ({
-        mobile_url : "unlucky.life/m",
-        tablet_redirection : "true"
-        });
-        
+    <!-- <script type="text/javascript" src="javascript/redirection-mobile.js"></script><script type="text/javascript">// <![CDATA[
+    //    SA.redirection_mobile ({
+    //    mobile_url : "unlucky.life/m",
+    //    tablet_redirection : "true"
+    //    });
+    //    
     // ]]></script>
 
     <!-- Favicon -->
     <link rel="icon" href="./images/favicon.webp" type="image/x-icon">
-    <title>Luc1en.eth</title>
 
-  <link rel="stylesheet" href="styles/index.css">
-  <link href="styles/loading.css" rel="stylesheet">
+    <link rel="preload" href="other/fonts/gta-art-deco.woff" as="font" type="font/woff" crossorigin>
+    <link rel="preload" href="other/fonts/pricedown.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="stylesheet" href="styles/VI.css">
+    <noscript>
+        <style>
+            .ul-loader{display:none}
+        </style>
+    </noscript>
+    <script src="javascript/bubbles/liquid-bubbles.js" defer></script>
+    <script src="javascript/VI.js" defer></script>
 </head>
-<body>
-<div id="loading">
-        <div class="circle">
-            <div class="noise animated"></div>
-        </div>
-</div>
 
-<canvas id="bg"></canvas>
+<body id="top" class="sunset">
+    <!-- First-load overlay. Both layers are the same geometry, pulled from the
+         one #ul-glyphs definition by <use> so they cannot drift apart: the
+         outline is the resting state, and the colour only exists inside a mask
+         cut from those same strokes, so the band travels through the mark
+         without ever painting a rectangle around it.
 
-<main>
-  <pre class="logo">             _            _            _ _  __
-            | |          | |          | (_)/ _|
- _   _ _ __ | |_   _  ___| | ___   _  | |_| |_ ___
-| | | | '_ \| | | | |/ __| |/ / | | | | | |  _/ _ \
-| |_| | | | | | |_| | (__|   &lt;| |_| |_| | | ||  __/
- \__,_|_| |_|_|\__,_|\___|_|\_\\__, (_)_|_|_| \___|
-                                __/ |
-                               |___/
-            </pre>
-<div class="meta-bar"></div>
-  <div class="chip">
-    <span class="chip-line"></span>
-    <span class="chip-greet">personal site</span>
-    <span class="sep-dot">·</span>
-    <span id="greet-el" class="chip-greet">good day</span>
-    <span id="ip-el" class="chip-ip"></span>
-    <span class="sep-dot">·</span>
-    <span id="views-el" class="chip-greet">... views</span>
-    <span class="chip-line"></span>
-  </div>
-
-  <div class="bio">
-    My name is <span>Lucien</span> and I'm <span><span id="age">x</span> years old</span>.<br>I enjoy <em>gaming</em>, <em>programming</em> and <em>tech stuff</em>.<br>
-    I go by many nicknames, mainly <span>'unlucky'</span> and <span>'lucien.eth'</span>.<br>
-    This is just my little introduction website. :)<span class="blink"></span>
-  </div>
-
-  <div class="links">
-    <span class="chip-line"></span>
-    <div class="links-inner">
-    <a href="https://x.com/lucienrip" id="x-link">
-      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-      X.com
-    </a>
-    <span class="sep-dot">·</span>
-    <a href="https://github.com/okpeach">
-      <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/></svg>
-      GitHub
-    </a>
-    <span class="sep-dot">·</span>
-    <a href="https://instagram.com/lucienrip">
-      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162S8.597 18.163 12 18.163s6.162-2.759 6.162-6.162S15.403 5.838 12 5.838zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-      Instagram
-    </a>
-    <span class="sep-dot">·</span>
-    <a href="portfolio" id="portfolio-link">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="fill:none;stroke:currentColor"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-      Portfolio
-    </a>
-    <span class="sep-dot">·</span>
-    <a href="dreams" id="wishlist-link">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="fill:none;stroke:currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      Wishlist
-    </a>
+         The paths are images/UL.svg's own geometry, converted from its <text>
+         to outlines - same 480 viewBox, same 5-unit stroke, verified identical
+         to the original at 960px. Text needed the 44KB font subset in the file
+         to have loaded before either layer could be drawn, which is the wrong
+         dependency for the thing that covers the load. -->
+    <div class="ul-loader" id="loader" aria-hidden="true">
+        <svg class="ul-mark" viewBox="0 0 480 480">
+            <defs>
+                <!-- The U and the L overlap, so stroking both of them draws the
+                     seams where they cross. Each letter is clipped to what lies
+                     OUTSIDE the other's fill, which leaves the union's outline
+                     and nothing else: a rect with the other letter punched out
+                     of it as an even-odd hole. The cuts land on the other
+                     letter's centre line, and that letter's own 5-unit stroke
+                     straddles it 2.5 either side, so the joins are covered
+                     rather than merely hidden. No boolean geometry, no redrawn
+                     logo - the same two outlines with their overlap masked. -->
+                <clipPath id="ul-past-l" clipPathUnits="userSpaceOnUse">
+                    <path clip-rule="evenodd" d="M-400 -400H1000V1000H-400ZM300.01 347.96L444.64 347.96L444.64 402.67L231.89 402.67L231.89 72.09L300.01 72.09L300.01 347.96Z" />
+                </clipPath>
+                <clipPath id="ul-past-u" clipPathUnits="userSpaceOnUse">
+                    <path clip-rule="evenodd" d="M-400 -400H1000V1000H-400ZM300.47 72.09L300.47 289.83Q300.47 344.1 266.53 375.66Q232.58 407.22 173.78 407.22Q115.88 407.22 81.82 376.56Q47.76 345.91 47.08 292.33L47.08 72.09L115.2 72.09L115.2 290.28Q115.2 322.75 130.75 337.62Q146.3 352.5 173.78 352.5Q231.22 352.5 232.13 292.1L232.13 72.09L300.47 72.09Z" />
+                </clipPath>
+                <g id="ul-glyphs" fill="none">
+                    <path clip-path="url(#ul-past-l)" d="M300.47 72.09L300.47 289.83Q300.47 344.1 266.53 375.66Q232.58 407.22 173.78 407.22Q115.88 407.22 81.82 376.56Q47.76 345.91 47.08 292.33L47.08 72.09L115.2 72.09L115.2 290.28Q115.2 322.75 130.75 337.62Q146.3 352.5 173.78 352.5Q231.22 352.5 232.13 292.1L232.13 72.09L300.47 72.09Z" />
+                    <path clip-path="url(#ul-past-u)" d="M300.01 347.96L444.64 347.96L444.64 402.67L231.89 402.67L231.89 72.09L300.01 72.09L300.01 347.96Z" />
+                </g>
+                <!-- --blue trailing into --hot leading, nothing in between but
+                     the ramp the two make on their own. Both ends fade out so
+                     the band has no visible start or finish; it passes over the
+                     outline instead of landing on it. The opaque stretch runs
+                     .14 to .92 of a 190-unit rect, about 30% of the distance it
+                     crosses. The two custom properties are set on .ul-loader,
+                     not read off the scene - see the stylesheet. -->
+                <linearGradient id="ul-band-tint" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="var(--ul-blue)" stop-opacity="0" />
+                    <stop offset=".14" stop-color="var(--ul-blue)" stop-opacity=".5" />
+                    <stop offset=".34" stop-color="var(--ul-blue)" />
+                    <stop offset=".78" stop-color="var(--ul-hot)" />
+                    <stop offset=".92" stop-color="var(--ul-hot)" stop-opacity=".85" />
+                    <stop offset="1" stop-color="var(--ul-hot)" stop-opacity="0" />
+                </linearGradient>
+                <!-- A hair wider than the outline it covers, so the colour owns
+                     the whole stroke instead of blending with the grey at its
+                     antialiased edges. 0.3 of a unit - under a tenth of a pixel
+                     at the size this renders. userSpaceOnUse because the rect
+                     this masks travels far outside its own box. -->
+                <mask id="ul-band-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="480" height="480">
+                    <use href="#ul-glyphs" stroke="#fff" stroke-width="5.6" />
+                </mask>
+            </defs>
+            <use class="ul-outline" href="#ul-glyphs" stroke-width="5" />
+            <g class="ul-sweep" mask="url(#ul-band-mask)">
+                <!-- The rotation is the band's angle; the animation only ever
+                     translates along the rotated x axis, so the band travels
+                     perpendicular to itself - in from the bottom left corner
+                     and out through the top right. -->
+                <g transform="rotate(-22 240 240)">
+                    <rect class="ul-band" x="-210" y="-40" width="190" height="560" fill="url(#ul-band-tint)" />
+                </g>
+            </g>
+        </svg>
     </div>
-    <span class="chip-line"></span>
-  </div>
-
-  <div class="meta-bar"></div>
-
-  <div class="footer">
-    <div class="foot-line"></div>
-    <div class="foot-items">
-      <span>Lucien</span>
-      <span class="sep-dot">·</span>
-      <span>Lucien.eth</span>
-      <span class="sep-dot">·</span>
-      <span>Unlucky</span>
-      <span>|</span>
-      <span id="date">DD. MM. YYYY</span>
-      <span class="sep-dot">·</span>
-      <span id="time">00:00:00</span>
+    <a class="skip" href="#profile">Skip to my profile</a><svg width="0" height="0" style="position:absolute"
+        xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+            <symbol id="icon-pin" viewBox="0 0 24 24">
+                <path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z" />
+                <circle cx="12" cy="10" r="2.5" />
+            </symbol>
+            <symbol id="icon-sun" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" />
+            </symbol>
+            <symbol id="icon-pause" viewBox="0 0 24 24">
+                <path d="M8 5v14M16 5v14" />
+            </symbol>
+            <symbol id="icon-play" viewBox="0 0 24 24">
+                <path d="m8 4 12 8-12 8Z" />
+            </symbol>
+            <symbol id="icon-x" viewBox="0 0 24 24">
+                <path d="m4 3 12 18h4L8 3ZM20 3l-7 8M4 21l7-8" />
+            </symbol>
+            <symbol id="icon-github" viewBox="0 0 24 24">
+                <path
+                    d="M9 19c-4 1-4-2-6-2m12 5v-3.5c0-1 .1-1.4-.5-2 3.6-.4 7-1.8 7-8A6 6 0 0 0 20 4.3 6 6 0 0 0 19.8 1S18.3.6 15 2.8a14 14 0 0 0-7 0C4.7.6 3.2 1 3.2 1A6 6 0 0 0 3 4.3 6 6 0 0 0 1.5 8.5c0 6.2 3.4 7.6 7 8-.6.6-.6 1.2-.5 2V22" />
+            </symbol>
+            <symbol id="icon-instagram" viewBox="0 0 24 24">
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <path d="M17.5 6.5h.01" />
+            </symbol>
+            <symbol id="icon-steam" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <circle cx="16.1" cy="8.6" r="3.1" />
+                <circle cx="8.5" cy="15.4" r="2.6" />
+                <path d="m13.4 10.7-2.6 2.5M2.3 12.7l3.8 1.6" />
+            </symbol>
+            <symbol id="icon-xbox" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M5.1 5.3c3.5 2.6 8 8 10.6 14.3M18.9 5.3c-3.5 2.6-8 8-10.6 14.3" />
+            </symbol>
+            <symbol id="icon-cube" viewBox="0 0 24 24">
+                <path d="m12 2.5 8.5 4.7v9.6L12 21.5l-8.5-4.7V7.2Z" />
+                <path d="m3.5 7.2 8.5 4.8 8.5-4.8M12 12v9.5" />
+            </symbol>
+            <symbol id="icon-copy" viewBox="0 0 24 24">
+                <rect x="8" y="8" width="12" height="13" rx="2" />
+                <path d="M16 8V3H3v13h5" />
+            </symbol>
+            <symbol id="icon-music" viewBox="0 0 24 24">
+                <path d="M9 18V5l11-2v13M9 8l11-2" />
+                <ellipse cx="5.5" cy="18" rx="3.5" ry="3" />
+                <ellipse cx="16.5" cy="16" rx="3.5" ry="3" />
+            </symbol>
+            <symbol id="icon-discord" viewBox="0 0 24 24">
+                <path
+                    d="M8 5 4 6C2 10 1 13 2 17l5 2 1-2m8-12 4 1c2 4 3 7 2 11l-5 2-1-2M7 6a17 17 0 0 1 10 0M6 16a17 17 0 0 0 12 0" />
+                <circle cx="9" cy="12" r="1.2" />
+                <circle cx="15" cy="12" r="1.2" />
+            </symbol>
+            <symbol id="icon-arrow" viewBox="0 0 24 24">
+                <path d="M5 19 19 5M5 5h14v14" />
+            </symbol>
+            <symbol id="icon-sparkle" viewBox="0 0 24 24">
+                <path
+                    d="M12 1c.6 6.5 4.5 10.4 11 11-6.5.6-10.4 4.5-11 11-.6-6.5-4.5-10.4-11-11C7.5 11.4 11.4 7.5 12 1Z" />
+            </symbol>
+        </defs>
+    </svg>
+    <div class="reading-progress" id="progress" aria-hidden="true"></div>
+    <div class="bubbles" id="bubbles" aria-hidden="true"></div>
+    <div class="page hero">
+        <header class="masthead"><a class="site-name" href="#top"><svg class="home-symbol" aria-hidden="true"
+                    viewBox="0 0 24 24">
+                    <use href="#icon-sparkle" />
+                </svg><span>unlucky<span class="site-tld">.life</span></span><span class="path-slash" aria-hidden="true">/</span></a><button
+                class="command-trigger" id="openPalette" type="button" aria-label="Open quick links"><span>quick
+                    links</span><kbd id="shortcutHint">Ctrl K</kbd></button></header>
+        <main class="layout" id="profile">
+            <div class="profile-column hero-copy">
+                <section class="intro entrance" aria-labelledby="profile-title">
+                    <p class="eyebrow"><svg class="spark" aria-hidden="true" viewBox="0 0 24 24">
+                            <use href="#icon-sparkle" />
+                        </svg> personal website</p>
+                    <h1 id="profile-title"><span class="greeting" id="userGreet">hey, i&#39;m</span><span
+                            class="name chrome" data-text="Lucien.">Lucien.<span class="glint g1" aria-hidden="true"><svg
+                                    viewBox="0 0 24 24">
+                                    <use href="#icon-sparkle" />
+                                </svg></span><span class="glint g2" aria-hidden="true"><svg viewBox="0 0 24 24">
+                                    <use href="#icon-sparkle" />
+                                </svg></span><span class="glint g3" aria-hidden="true"><svg viewBox="0 0 24 24">
+                                    <use href="#icon-sparkle" />
+                                </svg></span></span></h1>
+                    <div class="deck">
+                        <div class="identity-meta"><span>unlucky / lucien.eth</span><span id="ageLine" hidden><span
+                                    id="ageValue"></span> years old</span></div>
+                    </div>
+                    <p class="lead">An IT guy with a little 42U homelab<br class="wide-only"> and too many other things to
+                        tinker with.</p>
+                    <p class="bio">I work in IT and build things for the web. Usually messing with self-hosting
+                        or playing games. Sometimes I travel and take photos.</p>
+                </section>
+                <section class="elsewhere entrance delay-1" aria-labelledby="elsewhere-title">
+                    <h2 class="section-heading" id="elsewhere-title"><span class="section-number">01</span> around the
+                        internet<span class="heading-line"></span></h2>
+                    <nav class="socials" aria-label="My social profiles"><a href="https://github.com/lucieneth/"
+                            target="_blank" rel="noreferrer"><svg class="icon" aria-hidden="true">
+                                <use href="#icon-github" />
+                            </svg><span>GitHub</span><span class="handle">@lucieneth</span><svg class="icon arrow"
+                                aria-hidden="true">
+                                <use href="#icon-arrow" />
+                            </svg></a><a href="https://steamcommunity.com/id/unlucky-life" target="_blank"
+                            rel="noreferrer"><svg class="icon" aria-hidden="true">
+                                <use href="#icon-steam" />
+                            </svg><span>Steam</span><span class="handle">unlucky-life</span><svg class="icon arrow"
+                                aria-hidden="true">
+                                <use href="#icon-arrow" />
+                            </svg></a><a href="https://namemc.com/profile/LucienETH.1" target="_blank"
+                            rel="noreferrer"><svg class="icon" aria-hidden="true">
+                                <use href="#icon-cube" />
+                            </svg><span>NameMC</span><span class="handle">LucienETH</span><svg class="icon arrow"
+                                aria-hidden="true">
+                                <use href="#icon-arrow" />
+                            </svg></a><a href="https://x.com/lucienrip" target="_blank" rel="noreferrer"><svg
+                                class="icon" aria-hidden="true">
+                                <use href="#icon-x" />
+                            </svg><span>Twitter</span><span class="handle">@lucienrip</span><svg class="icon arrow"
+                                aria-hidden="true">
+                                <use href="#icon-arrow" />
+                            </svg></a><a href="https://instagram.com/lucienrip" target="_blank" rel="noreferrer"><svg
+                                class="icon" aria-hidden="true">
+                                <use href="#icon-instagram" />
+                            </svg><span>Instagram</span><span class="handle">@lucienrip</span><svg class="icon arrow"
+                                aria-hidden="true">
+                                <use href="#icon-arrow" />
+                            </svg></a></nav>
+                    <div class="contact-line" id="contact"><span class="contact-arrow"
+                            aria-hidden="true">&#8627;</span><a class="email"
+                            href="mailto:lucien@unlucky.life">lucien@unlucky.life</a><button class="copy-email"
+                            id="copyEmail" type="button" aria-label="Copy email address"><svg class="icon"
+                                aria-hidden="true">
+                                <use href="#icon-copy" />
+                            </svg><span class="copy-label" id="copyLabel">copy</span></button></div>
+                </section>
+                <section class="interests entrance delay-2" id="about" aria-labelledby="interests-title">
+                    <h2 class="section-heading" id="interests-title"><span class="section-number">02</span> things
+                        i&#39;m into<span class="heading-line"></span></h2>
+                    <div class="interest-list"><span>homelab</span><span>smart
+                            home</span><span>photography</span><span>gaming</span><span>FPV</span><span>cars</span><span>Linux</span><span>travel</span><span>music</span><span>Apple</span>
+                    </div>
+                </section>
+            </div>
+            <aside class="now-column entrance delay-2" id="now" aria-labelledby="now-title">
+                <div class="local-clock">
+                    <div class="clock-location"><svg class="icon" aria-hidden="true">
+                            <use href="#icon-pin" />
+                        </svg>Czechia<span id="localDate">Europe / Prague</span></div>
+                    <div class="clock-time"><time id="localTime" class="chrome" data-text="--:--">--:--</time><span
+                            id="timeZone">CEST</span><span class="clock-label">my local time</span></div>
+                    <div class="clock-track" aria-hidden="true">
+                        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                    </div>
+                </div>
+                <h2 class="section-heading" id="now-title"><span class="section-number">03</span> the now corner<span
+                        class="heading-line"></span></h2>
+                <div class="live-desk">
+                    <article class="live-card fitness-card reveal">
+                        <div class="card-label"><span class="activity-marker"
+                                aria-hidden="true">&#9673;</span><span>Daily activity</span><span
+                                class="today-label">Today</span></div>
+                        <div class="fitness-main"><svg class="rings" viewBox="0 0 120 120" role="img" id="fitnessRings"
+                                aria-label="Fitness data not shared">
+                                <g style="color:#ff9db6">
+                                    <circle class="ring-track" cx="60" cy="60" r="49" />
+                                    <circle id="moveRing" class="ring-value" pathLength="100" cx="60" cy="60" r="49" />
+                                </g>
+                                <g style="color:#f0c4a4">
+                                    <circle class="ring-track" cx="60" cy="60" r="35" />
+                                    <circle id="exerciseRing" class="ring-value" pathLength="100" cx="60" cy="60"
+                                        r="35" />
+                                </g>
+                                <g style="color:#8fa8e8">
+                                    <circle class="ring-track" cx="60" cy="60" r="21" />
+                                    <circle id="standRing" class="ring-value" pathLength="100" cx="60" cy="60" r="21" />
+                                </g>
+                            </svg>
+                            <dl>
+                                <div>
+                                    <dt>Move</dt>
+                                    <dd id="moveValue">&#8212; kcal</dd>
+                                </div>
+                                <div>
+                                    <dt>Exercise</dt>
+                                    <dd id="exerciseValue">&#8212; min</dd>
+                                </div>
+                                <div>
+                                    <dt>Stand</dt>
+                                    <dd id="standValue">&#8212; hr</dd>
+                                </div>
+                            </dl>
+                        </div>
+                        <div class="card-footer"><span id="fitnessSync">Not shared</span><span
+                                aria-hidden="true">&#8599;</span></div>
+                    </article>
+                    <article class="live-card discord-card reveal">
+                        <div class="card-label"><svg class="icon" aria-hidden="true">
+                                <use href="#icon-discord" />
+                            </svg><span>Discord</span><span class="mini-state" id="topStatus">Not shared</span></div>
+                        <div class="presence-main">
+                            <div class="presence-symbol" aria-hidden="true"><svg class="icon">
+                                    <use href="#icon-discord" />
+                                </svg><img id="discordAvatar" alt="" hidden><span class="presence-dot"></span></div>
+                            <div>
+                                <h3 id="discordStatus">Not shared</h3>
+                                <p id="activityName">No activity shared</p>
+                            </div>
+                        </div>
+                        <p class="live-description" id="activityDetails">My shared Discord activity will appear here.
+                        </p>
+                    </article>
+                    <article class="live-card music-card reveal" id="musicCard">
+                        <div class="card-label"><svg class="icon" aria-hidden="true">
+                                <use href="#icon-music" />
+                            </svg><span id="musicLabel">Apple Music</span>
+                            <div class="equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+                        </div>
+                        <div class="music-main">
+                            <div class="cover" aria-hidden="true"><svg class="icon">
+                                    <use href="#icon-music" />
+                                </svg><img id="musicArtwork" alt="" hidden></div>
+                            <div class="track-info">
+                                <h3 id="musicTitle">Not shared</h3>
+                                <p id="musicArtist">Listening activity not shared</p>
+                            </div>
+                        </div>
+                        <div class="card-footer"><span>My listening activity</span><a id="musicLink" class="music-link"
+                                target="_blank" rel="noreferrer" hidden>Open track &#8599;</a></div>
+                    </article>
+                    <article class="live-card xbox-card reveal">
+                        <div class="card-label"><svg class="icon" aria-hidden="true">
+                                <use href="#icon-xbox" />
+                            </svg><span>Xbox Live</span><span class="card-meta" id="xboxState">Not shared</span></div>
+                        <div class="presence-main">
+                            <div class="presence-symbol" aria-hidden="true"><svg class="icon">
+                                    <use href="#icon-xbox" />
+                                </svg><img id="xboxArt" alt="" hidden><span class="presence-dot" id="xboxDot"></span>
+                            </div>
+                            <div>
+                                <h3 id="xboxStatus">Not shared</h3>
+                                <p id="xboxActivity">No recent activity</p>
+                            </div>
+                        </div>
+                        <p class="live-description" id="xboxDetail">My last Xbox session will appear here.</p>
+                    </article>
+                </div>
+                <p class="data-note"><span aria-hidden="true">&#8627;</span> little bits of my day, when shared.</p>
+            </aside>
+        </main>
+        <footer class="footer"><span>&#169; <span id="year"></span> Lucien<span class="footer-dot">&#183;</span><span
+                    class="made-personal">a personal corner of the web</span></span>
+            <div class="footer-controls"><button class="scene-mode" id="mode" type="button"
+                    aria-label="Switch to daylight scene" aria-pressed="true"><svg class="icon" aria-hidden="true">
+                        <use href="#icon-sun" />
+                    </svg><span id="modeLabel">Sunset</span></button><button class="motion" id="motionToggle"
+                    type="button" aria-label="Pause motion" aria-pressed="false"><svg class="icon" aria-hidden="true">
+                        <use id="motionIcon" href="#icon-pause" />
+                    </svg></button></div>
+        </footer>
     </div>
-    <div class="foot-line"></div>
-    </div>
-  
-</main>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="javascript/titleEffect.jquery.min.js"></script>
-<script src="javascript/index.js"></script>
-<script src="javascript/console.js"></script>
+    <dialog class="command-palette" id="palette" aria-labelledby="palette-title">
+        <div class="palette-header">
+            <h2 id="palette-title">Quick links</h2><button id="closePalette" type="button"
+                aria-label="Close quick links"><kbd>esc</kbd></button>
+        </div><label class="sr-only" for="paletteSearch">Find a link or action</label><input id="paletteSearch"
+            type="search" placeholder="Where to?" autocomplete="off">
+        <div class="palette-options"><a href="https://github.com/lucieneth/" target="_blank" rel="noreferrer"
+                data-command="github lucieneth code">GitHub <span>@lucieneth &#8599;</span></a><a
+                href="https://steamcommunity.com/id/unlucky-life" target="_blank" rel="noreferrer"
+                data-command="steam games unlucky-life">Steam <span>unlucky-life &#8599;</span></a><a
+                href="https://namemc.com/profile/LucienETH.1" target="_blank" rel="noreferrer"
+                data-command="namemc minecraft skin lucieneth">NameMC <span>LucienETH &#8599;</span></a><a
+                href="https://x.com/lucienrip" target="_blank" rel="noreferrer"
+                data-command="twitter x lucienrip">Twitter <span>@lucienrip &#8599;</span></a><a
+                href="https://instagram.com/lucienrip" target="_blank" rel="noreferrer"
+                data-command="instagram photos lucienrip">Instagram <span>@lucienrip &#8599;</span></a><a
+                href="mailto:lucien@unlucky.life" data-command="email mail contact hello">Send an email
+                <span>&#8599;</span></a><button type="button" id="paletteCopy" data-command="copy email address">Copy
+                email address <span>&#10697;</span></button><button type="button" id="paletteScene"
+                data-command="scene sunset daylight theme">Switch the scenery <span>&#8635;</span></button></div>
+        <p class="palette-empty" id="paletteEmpty" hidden>No matching links.</p>
+        <div class="palette-footer"><span>&#8593; &#8595; to move</span><span>&#8629; to open</span></div>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
+
 </html>

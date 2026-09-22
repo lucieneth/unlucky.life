@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Liquid Bubbles — demo</title>
+<meta name="theme-color" content="#111639">
+<link rel="stylesheet" href="javascript/bubbles/liquid-bubbles.css">
+<style>
+  /* ---- demo page chrome only; nothing here is required by the effect ---- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    font: 400 16px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, sans-serif;
+    color: #efe9fb;
+    background: #0d1130;            /* seen only before the canvas paints */
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* --- hero ------------------------------------------------------- */
+  .hero {
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 96px 0 72px;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 12px; letter-spacing: .22em; text-transform: uppercase;
+    color: #e7a7be;
+    padding: 7px 14px; margin-bottom: 26px;
+    border: 1px solid rgba(231,167,190,.34); border-radius: 999px;
+    background: rgba(17,22,57,.34);
+    backdrop-filter: blur(6px);
+  }
+  h1 {
+    margin: 0 0 20px;
+    font-size: clamp(38px, 8vw, 84px); line-height: 1.02;
+    letter-spacing: -.03em; font-weight: 600;
+    text-shadow: 0 2px 40px rgba(10,12,40,.55);
+  }
+  h1 em {
+    font-style: normal;
+    background: linear-gradient(100deg, #f4cbae, #e7a7be 42%, #9fc9e8);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .lede {
+    margin: 0 auto 36px; max-width: 54ch;
+    font-size: clamp(16px, 2.1vw, 19px); color: #d6cfef;
+    text-shadow: 0 1px 24px rgba(10,12,40,.6);
+  }
+  .row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    appearance: none; cursor: pointer; font: inherit; font-size: 15px;
+    padding: 12px 22px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.22);
+    background: rgba(255,255,255,.08); color: #fff;
+    backdrop-filter: blur(10px);
+    transition: background .2s, border-color .2s, transform .2s;
+  }
+  .btn:hover { background: rgba(255,255,255,.15); border-color: rgba(255,255,255,.4); }
+  .btn:active { transform: translateY(1px); }
+  .btn--solid { background: #e7a7be; color: #1a1038; border-color: transparent; font-weight: 600; }
+  .btn--solid:hover { background: #f0b8cb; }
+
+  /* --- sections --------------------------------------------------- */
+  section { padding: 88px 0; }
+  h2 { font-size: clamp(24px, 4vw, 34px); letter-spacing: -.02em; margin: 0 0 10px; font-weight: 600; }
+  .sub { color: #b7aee0; margin: 0 0 32px; max-width: 60ch; }
+
+  .cards { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); }
+
+  /* a card that uses the effect as its own background */
+  .card {
+    --lb-radius: 22px;            /* the engine reads this back off the element */
+    --lb-scrim: .26;
+    min-height: 260px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 26px;
+    box-shadow: 0 18px 50px -22px rgba(0,0,0,.75);
+  }
+  .card h3 { margin: 0 0 6px; font-size: 19px; font-weight: 600; }
+  .card p  { margin: 0; font-size: 14px; color: #cfc7ee; }
+
+  /* a plain card, for contrast */
+  .card--plain {
+    border-radius: 22px; border: 1px solid rgba(159,176,224,.24);
+    background: rgba(22,29,71,.5); backdrop-filter: blur(12px);
+  }
+
+  /* a hero-sized band using the effect as a section background */
+  .band {
+    --lb-radius: 30px;
+    --lb-scrim: .3;
+    min-height: 380px; display: grid; place-items: center; text-align: center;
+    padding: 56px 28px;
+    box-shadow: 0 30px 80px -40px rgba(0,0,0,.85);
+  }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .88em; padding: 2px 6px; border-radius: 6px;
+    background: rgba(255,255,255,.1); color: #f4cbae;
+  }
+  pre {
+    margin: 0; padding: 18px 20px; overflow-x: auto;
+    border-radius: 16px; border: 1px solid rgba(159,176,224,.2);
+    background: rgba(12,16,44,.62); backdrop-filter: blur(10px);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 13px; line-height: 1.65; color: #d7d0f2;
+  }
+  pre .k { color: #e7a7be; } pre .c { color: #8e8ab8; } pre .n { color: #9fc9e8; }
+
+  footer { padding: 60px 0 90px; color: #9b93c6; font-size: 14px; text-align: center; }
+
+  /* --- control panel ---------------------------------------------- */
+  .panel {
+    position: fixed; right: 16px; bottom: 16px; z-index: 50;
+    width: 290px; max-height: min(78dvh, 640px);
+    display: flex; flex-direction: column;
+    border-radius: 18px; border: 1px solid rgba(159,176,224,.26);
+    background: rgba(12,15,42,.82); backdrop-filter: blur(18px) saturate(1.2);
+    box-shadow: 0 24px 60px -24px rgba(0,0,0,.9);
+    font-size: 12px;
+  }
+  .panel__head {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 14px; border-bottom: 1px solid rgba(159,176,224,.18);
+  }
+  .panel__head strong { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #e7a7be; }
+  .panel__head button {
+    appearance: none; cursor: pointer; font: inherit; font-size: 11px;
+    margin-left: auto; padding: 5px 10px; border-radius: 8px;
+    border: 1px solid rgba(159,176,224,.3); background: rgba(255,255,255,.06); color: #efe9fb;
+  }
+  .panel__head button:hover { background: rgba(255,255,255,.14); }
+  .panel__body { overflow-y: auto; padding: 6px 14px 14px; scrollbar-width: thin; }
+  .panel.is-closed .panel__body { display: none; }
+  .panel h4 {
+    margin: 14px 0 6px; font-size: 10px; letter-spacing: .16em;
+    text-transform: uppercase; color: #8e8ab8; font-weight: 600;
+  }
+  .ctl { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; align-items: center; margin: 9px 0; }
+  .ctl label { color: #c8c1e8; }
+  .ctl output { color: #f4cbae; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 11px; }
+  .ctl input[type=range] { grid-column: 1 / -1; width: 100%; accent-color: #e7a7be; height: 18px; }
+  .ctl--sw { grid-template-columns: 1fr auto; }
+  .ctl--sw input { accent-color: #e7a7be; width: 16px; height: 16px; }
+  .swatches { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .swatches button {
+    cursor: pointer; padding: 6px 10px; font: inherit; font-size: 11px;
+    border-radius: 8px; border: 1px solid rgba(159,176,224,.3);
+    background: rgba(255,255,255,.06); color: #efe9fb;
+  }
+  .swatches button:hover { background: rgba(255,255,255,.14); }
+  @media (max-width: 720px) {
+    .panel { right: 10px; left: 10px; width: auto; bottom: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     1. FULL-PAGE BACKGROUND
+     One element, fixed behind everything. The whole viewport is
+     the liquid-filled surface.
+     ========================================================= -->
+<div class="lb lb--fixed" id="page-bg"></div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div>
+      <span class="eyebrow">Liquid-filled surface</span>
+      <h1>Celá plocha je<br><em>nádoba s kapalinou</em></h1>
+      <p class="lede">
+        Žádný disk, žádná kruhová maska. Tvar určuje container — viewport,
+        sekce nebo karta se zaoblenými rohy. Bubliny stoupají uvnitř a hranice
+        tvaru respektují, protože fyzika i shader používají stejnou definici.
+      </p>
+      <div class="row">
+        <button class="btn btn--solid" id="reseed">Nové rozložení</button>
+        <button class="btn" id="toggleMotion">Pozastavit pohyb</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =======================================================
+       2. AS A CARD BACKGROUND
+       ======================================================= -->
+  <section>
+    <h2>Jako pozadí karty</h2>
+    <p class="sub">
+      Stejný engine, menší container. Velikost bublin i jejich počet se
+      odvozují od plochy, takže karta nedostane bubliny z fullscreenu ve
+      zmenšenině.
+    </p>
+    <div class="cards">
+      <div class="lb card" data-liquid-bubbles='{"bubbles":{"density":6,"maxRadius":22},"interaction":{"parallax":5}}'>
+        <div class="lb__scrim"></div>
+        <div class="lb__content">
+          <h3>Auto-init</h3>
+          <p>Nastaveno přes <code>data-liquid-bubbles</code> atribut, bez řádku JS.</p>
+        </div>
+      </div>
+      <div class="lb card" data-liquid-bubbles='{"palette":{"deep":"#123b52","violet":"#1d6b78","orchid":"#3fa3a0","blush":"#f2d3a8","sun":"#ffe9c9","abyss":"#07202f","aqua":"#7fe0d0"},"bubbles":{"density":7,"maxRadius":18}}'>
+        <div class="lb__scrim"></div>
+        <div class="lb__content">
+          <h3>Jiná paleta</h3>
+          <p>Sedm stopů v configu. Celý materiál se přebarví, bubliny se přizpůsobí.</p>
+        </div>
+      </div>
+      <div class="card--plain card" style="min-height:260px;display:flex;flex-direction:column;justify-content:flex-end;padding:26px">
+        <h3>Běžná karta</h3>
+        <p>Pro srovnání — efekt je opt-in per element, ne globální filtr.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =======================================================
+       3. AS A SECTION BAND
+       ======================================================= -->
+  <section>
+    <h2>Jako pozadí sekce</h2>
+    <p class="sub">Vlastní instance s klidnějším nastavením — pomalejší tok, méně bublin.</p>
+    <div class="lb band" id="band">
+      <div class="lb__scrim"></div>
+      <div class="lb__content">
+        <h2 style="margin-bottom:8px">Klidnější varianta</h2>
+        <p class="sub" style="margin:0 auto">
+          <code>flow: 0.03</code>, <code>rise: 16</code>, <code>density: 2.4</code>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =======================================================
+       4. USAGE
+       ======================================================= -->
+  <section>
+    <h2>Použití</h2>
+    <p class="sub">Dva soubory, žádné závislosti.</p>
+<pre><span class="c">&lt;!-- 1. fullscreen pozadí --&gt;</span>
+&lt;<span class="k">link</span> rel="stylesheet" href="liquid-bubbles.css"&gt;
+&lt;<span class="k">div</span> class="lb lb--fixed" id="bg"&gt;&lt;/<span class="k">div</span>&gt;
+&lt;<span class="k">script</span> src="liquid-bubbles.js"&gt;&lt;/<span class="k">script</span>&gt;
+&lt;<span class="k">script</span>&gt;
+  <span class="n">LiquidBubbles</span>.create(<span class="k">'#bg'</span>);
+
+  <span class="c">// 2. jako karta - tvar si vezme z CSS border-radius</span>
+  <span class="n">LiquidBubbles</span>.create(<span class="k">'.card'</span>, {
+    bubbles: { density: <span class="n">6</span>, maxRadius: <span class="n">22</span> },
+    liquid:  { flow: <span class="n">0.03</span> }
+  });
+
+  <span class="c">// 3. nebo deklarativně, bez JS</span>
+  <span class="n">LiquidBubbles</span>.autoInit();
+&lt;/<span class="k">script</span>&gt;</pre>
+  </section>
+
+  <footer>
+    liquid-bubbles.js — WebGL, bez závislostí, respektuje <code>prefers-reduced-motion</code>.
+  </footer>
+</div>
+
+<!-- =========================================================
+     LIVE CONTROLS — demo only
+     ========================================================= -->
+<aside class="panel" id="panel">
+  <div class="panel__head">
+    <strong>Parametry</strong>
+    <button id="panelToggle" aria-expanded="true">skrýt</button>
+  </div>
+  <div class="panel__body" id="panelBody"></div>
+</aside>
+
+<script src="javascript/bubbles/liquid-bubbles.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* --- the three demo instances ---------------------------------- */
+  var bg = LiquidBubbles.create('#page-bg');
+
+  var band = LiquidBubbles.create('#band', {
+    liquid:  { flow: 0.03, veil: 0.8 },
+    bubbles: { density: 2.4, rise: 16, maxRadius: 26 },
+    interaction: { parallax: 4 }
+  });
+
+  var cards = LiquidBubbles.autoInit();   // the [data-liquid-bubbles] cards
+
+  // handy when tuning from the console: liquidDemo.page.update({...})
+  window.liquidDemo = { page: bg, band: band, cards: cards };
+
+  /* --- hero buttons ---------------------------------------------- */
+  var moving = true;
+  document.getElementById('reseed').addEventListener('click', function () { bg.reseed(); });
+  document.getElementById('toggleMotion').addEventListener('click', function () {
+    moving = !moving;
+    bg.update({ motion: moving });
+    this.textContent = moving ? 'Pozastavit pohyb' : 'Spustit pohyb';
+  });
+
+  /* --- control panel, generated from a declarative spec ------------
+     Each row names a dotted config path, so adding a knob is one
+     line here and nothing at all in the engine.                    */
+  var SPEC = [
+    ['Kapalina', [
+      ['liquid.flow',      0,    0.25,  0.005, 'rychlost toku'],
+      ['liquid.scale',     0.4,  3,     0.05,  'měřítko struktury'],
+      ['liquid.opacity',   0,    1,     0.02,  'krytí kapaliny'],
+      ['liquid.veil',      0,    1.5,   0.05,  'krytí pigmentu'],
+      ['liquid.caustics',  0,    0.4,   0.01,  'kaustiky'],
+      ['liquid.soften',    0,    8,     0.1,   'rozostření (blur)'],
+      ['liquid.depth',     0,    0.6,   0.02,  'hloubka / stín u dna'],
+      ['liquid.vignette',  0,    0.6,   0.02,  'vinětace'],
+      ['liquid.edge',      0,    2,     0.05,  'lesk u hran'],
+      ['liquid.grain',     0,    0.06,  0.002, 'zrno']
+    ]],
+    ['Bubliny', [
+      ['bubbles.density',   0.5,  14,   0.1,   'počet (na plochu)'],
+      ['bubbles.minRadius', 1,    14,   0.5,   'min. poloměr'],
+      ['bubbles.maxRadius', 6,    70,   1,     'max. poloměr'],
+      ['bubbles.sizeBias',  1,    5,    0.1,   'převaha malých'],
+      ['bubbles.rise',      2,    90,   1,     'rychlost stoupání'],
+      ['bubbles.sizeSpeed', -1,   1.2,  0.05,  'vliv velikosti na rychlost'],
+      ['bubbles.inertia',   0.1,  3,    0.05,  'setrvačnost'],
+      ['bubbles.drift',     0,    40,   0.5,   'boční drift'],
+      ['bubbles.wobble',    0,    0.5,  0.01,  'frekvence kolísání'],
+      ['bubbles.jitter',    0,    1,    0.05,  'mikro-kolísání'],
+      ['bubbles.cluster',   0,    1,    0.05,  'shlukování'],
+      ['bubbles.opacity',   0,    1,    0.02,  'krytí'],
+      ['bubbles.refraction',0,    2,    0.05,  'lom světla'],
+      ['bubbles.rim',       0,    2,    0.05,  'obrysové světlo'],
+      ['bubbles.highlight', 0,    2,    0.05,  'odlesk'],
+      ['bubbles.glow',      0,    2,    0.05,  'záře (glow)']
+    ]],
+    ['Tvar a interakce', [
+      ['container.radius',     0, 160,  1,     'border-radius (px)'],
+      ['interaction.strength', 0, 3,    0.05,  'síla interakce'],
+      ['interaction.radius',   40, 500, 10,    'dosah kurzoru'],
+      ['interaction.swirl',    0, 2,    0.05,  'vír'],
+      ['interaction.parallax', 0, 40,   1,     'parallax (px)']
+    ]],
+    ['Výkon', [
+      ['performance.liquidScale', 0.25, 1, 0.05, 'rozlišení kapaliny'],
+      ['performance.dprMax',      1,    3, 0.25, 'max. DPR']
+    ]]
+  ];
+
+  var PALETTES = {
+    'Vice': { abyss:'#111639', deep:'#272a6d', violet:'#543d90', orchid:'#9c5099', blush:'#e7a7be', sun:'#f4cbae', aqua:'#4ab4c5' },
+    'Laguna': { abyss:'#07202f', deep:'#123b52', violet:'#1d6b78', orchid:'#3fa3a0', blush:'#f2d3a8', sun:'#ffe9c9', aqua:'#7fe0d0' },
+    'Půlnoc': { abyss:'#05060f', deep:'#12162e', violet:'#262a4f', orchid:'#4a4470', blush:'#b9b6d6', sun:'#e3dff0', aqua:'#6d7fa8' },
+    'Guava':  { abyss:'#2a0a24', deep:'#5c1340', violet:'#98244e', orchid:'#d24b56', blush:'#ffb48a', sun:'#ffe2b8', aqua:'#ff8fb0' }
+  };
+
+  var get = function (o, path) {
+    return path.split('.').reduce(function (a, k) { return a[k]; }, o);
+  };
+  var setPath = function (path, value) {
+    var parts = path.split('.'), patch = {}, cur = patch;
+    for (var i = 0; i < parts.length - 1; i++) { cur[parts[i]] = {}; cur = cur[parts[i]]; }
+    cur[parts[parts.length - 1]] = value;
+    return patch;
+  };
+
+  var body = document.getElementById('panelBody');
+  SPEC.forEach(function (group) {
+    var h = document.createElement('h4');
+    h.textContent = group[0];
+    body.appendChild(h);
+
+    group[1].forEach(function (row) {
+      var path = row[0], min = row[1], max = row[2], step = row[3], label = row[4];
+      var start = path === 'container.radius' ? 0 : get(bg.cfg, path);
+
+      var wrap = document.createElement('div');
+      wrap.className = 'ctl';
+      wrap.innerHTML =
+        '<label for="c-' + path + '">' + label + '</label>' +
+        '<output id="o-' + path + '">' + start + '</output>' +
+        '<input id="c-' + path + '" type="range" min="' + min + '" max="' + max +
+        '" step="' + step + '" value="' + start + '">';
+      body.appendChild(wrap);
+
+      var input = wrap.querySelector('input'), out = wrap.querySelector('output');
+      input.addEventListener('input', function () {
+        var v = parseFloat(input.value);
+        out.textContent = v;
+        if (path === 'container.radius') {
+          // the shape is CSS-owned, so change CSS and let the engine re-read it
+          document.getElementById('page-bg').style.borderRadius = v + 'px';
+          bg.update({ container: { radius: 'auto' } });
+        } else {
+          bg.update(setPath(path, v));
+        }
+      });
+    });
+  });
+
+  var ph = document.createElement('h4'); ph.textContent = 'Paleta'; body.appendChild(ph);
+  var sw = document.createElement('div'); sw.className = 'swatches'; body.appendChild(sw);
+  Object.keys(PALETTES).forEach(function (name) {
+    var b = document.createElement('button');
+    b.textContent = name;
+    b.addEventListener('click', function () { bg.update({ palette: PALETTES[name] }); });
+    sw.appendChild(b);
+  });
+
+  var panel = document.getElementById('panel'), pt = document.getElementById('panelToggle');
+  pt.addEventListener('click', function () {
+    var closed = panel.classList.toggle('is-closed');
+    pt.textContent = closed ? 'parametry' : 'skrýt';
+    pt.setAttribute('aria-expanded', String(!closed));
+  });
+}());
+</script>
+</body>
+</html>

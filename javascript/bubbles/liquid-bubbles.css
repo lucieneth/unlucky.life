@@ -1,0 +1,199 @@
+/*!
+ * liquid-bubbles.css - companion styles for liquid-bubbles.js
+ *
+ * The JS never writes visual CSS. Everything about the SHAPE and the
+ * glass treatment lives here, so the panel is styled the same way any
+ * other element on the page is - including border-radius, which the
+ * engine reads back out of the computed style and feeds to both the
+ * shader and the bubble physics.
+ *
+ * Layers inside .lb, bottom to top:
+ *   .lb__canvas   the WebGL surface (liquid + bubbles)
+ *   .lb__glass    CSS-only sheen and rim - cheap, and it survives fallback
+ *   .lb__scrim    optional readability veil, opt in per instance
+ *   .lb__content  your markup
+ */
+
+/* ============================================================
+   TOKENS
+   Override these per instance to retheme without touching JS.
+   ============================================================ */
+.lb {
+  --lb-radius: 0px;
+
+  /* palette echo - only used by the CSS fallback and the glass layer */
+  --lb-abyss:  #111639;
+  --lb-deep:   #272a6d;
+  --lb-violet: #543d90;
+  --lb-orchid: #9c5099;
+  --lb-blush:  #e7a7be;
+  --lb-sun:    #f4cbae;
+
+  --lb-sheen:    0.55;   /* strength of the CSS glass overlay */
+  --lb-scrim:    0.34;   /* readability veil opacity */
+  --lb-min-height: 0px;
+}
+
+/* ============================================================
+   THE PANEL
+   ============================================================ */
+.lb {
+  position: relative;
+  overflow: hidden;              /* the liquid is clipped by the shape */
+  border-radius: var(--lb-radius);
+  min-height: var(--lb-min-height);
+  isolation: isolate;            /* keep blend modes out of the page */
+  background-color: var(--lb-deep);   /* covers the frame before WebGL starts */
+  color-scheme: dark;
+}
+
+/* Full-page background: fixed behind everything, never scrolls, never
+   participates in layout. Put it as the first child of <body>. */
+.lb--fixed {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  border-radius: 0;
+  --lb-radius: 0px;
+}
+
+.lb__canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  pointer-events: none;          /* the effect never eats clicks */
+  z-index: 0;
+}
+
+/* ============================================================
+   GLASS
+   A thin CSS pass on top of the canvas: a hairline rim, a soft top
+   sheen and a touch of corner shadow. Doing this in CSS rather than
+   in the shader means it still looks like glass in the fallback.
+   ============================================================ */
+.lb__glass {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+  opacity: var(--lb-sheen);
+  background:
+    linear-gradient(180deg,
+      rgba(255, 255, 255, 0.10) 0%,
+      rgba(255, 255, 255, 0.02) 14%,
+      rgba(255, 255, 255, 0) 38%),
+    radial-gradient(120% 70% at 50% -10%,
+      rgba(255, 245, 250, 0.16) 0%,
+      rgba(255, 245, 250, 0) 60%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.07),
+    inset 1px 0 0 rgba(255, 255, 255, 0.05),
+    inset -1px 0 0 rgba(255, 255, 255, 0.05),
+    inset 0 0 70px rgba(255, 255, 255, 0.045);
+}
+
+/* A rounded panel also wants a real outer edge to sit on the page. */
+.lb:not(.lb--fixed) .lb__glass {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.26),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 0 70px rgba(255, 255, 255, 0.05),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.10);
+}
+
+/* ============================================================
+   READABILITY
+   Opt in with <div class="lb__scrim"></div>. The effect is dark and
+   fairly even, but a scrim guarantees contrast wherever a pale veil
+   happens to drift under your text.
+   ============================================================ */
+.lb__scrim {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(180deg,
+    rgba(8, 10, 32, calc(var(--lb-scrim) * 1.05)) 0%,
+    rgba(8, 10, 32, calc(var(--lb-scrim) * 0.30)) 42%,
+    rgba(8, 10, 32, calc(var(--lb-scrim) * 1.20)) 100%);
+}
+
+/* Anything you want on top of the liquid. */
+.lb__content {
+  position: relative;
+  z-index: 3;
+}
+
+/* ============================================================
+   CSS FALLBACK
+   Applied by the engine as .lb--fallback when WebGL is missing or a
+   device cannot keep up. Same palette, layered radial gradients, and
+   a handful of DOM bubbles that cost nothing to animate because they
+   only ever touch transform and opacity.
+   ============================================================ */
+.lb__fb {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(90% 60% at 18% 12%, rgba(231, 167, 190, 0.30) 0%, rgba(231, 167, 190, 0) 62%),
+    radial-gradient(70% 55% at 82% 26%, rgba(156, 80, 153, 0.36) 0%, rgba(156, 80, 153, 0) 66%),
+    radial-gradient(120% 80% at 50% 108%, rgba(17, 22, 57, 0.85) 0%, rgba(17, 22, 57, 0) 60%),
+    linear-gradient(175deg,
+      var(--lb-violet) 0%,
+      var(--lb-deep) 46%,
+      var(--lb-abyss) 100%);
+}
+
+.lb__fb i {
+  position: absolute;
+  bottom: -14%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 30%,
+      rgba(255, 255, 255, 0.55) 0%,
+      rgba(255, 255, 255, 0.10) 26%,
+      rgba(255, 255, 255, 0.03) 52%,
+      rgba(255, 255, 255, 0.16) 88%,
+      rgba(255, 255, 255, 0.42) 100%);
+  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.35);
+  opacity: 0;
+  animation: lb-rise linear infinite;
+}
+
+/* seven hand-placed bubbles - small ones faster, matching the engine */
+.lb__fb i:nth-child(1) { left:  8%; width:  10px; height:  10px; animation-duration: 21s; animation-delay:  0s; }
+.lb__fb i:nth-child(2) { left: 24%; width:  26px; height:  26px; animation-duration: 34s; animation-delay: -6s; }
+.lb__fb i:nth-child(3) { left: 39%; width:   6px; height:   6px; animation-duration: 17s; animation-delay: -11s; }
+.lb__fb i:nth-child(4) { left: 54%; width:  44px; height:  44px; animation-duration: 47s; animation-delay: -21s; }
+.lb__fb i:nth-child(5) { left: 68%; width:  14px; height:  14px; animation-duration: 25s; animation-delay:  -3s; }
+.lb__fb i:nth-child(6) { left: 79%; width:   8px; height:   8px; animation-duration: 19s; animation-delay: -14s; }
+.lb__fb i:nth-child(7) { left: 91%; width:  20px; height:  20px; animation-duration: 30s; animation-delay:  -8s; }
+
+@keyframes lb-rise {
+  0%   { transform: translate3d(0, 0, 0) scale(0.9);        opacity: 0; }
+  8%   {                                                    opacity: 0.85; }
+  50%  { transform: translate3d(22px, -60vh, 0) scale(1);   opacity: 0.85; }
+  88%  { transform: translate3d(-10px, -108vh, 0) scale(1); opacity: 0.55; }
+  100% { transform: translate3d(-4px, -124vh, 0) scale(1);  opacity: 0; }
+}
+
+/* ============================================================
+   MOTION PREFERENCES
+   The engine already stops its loop and leaves one fully-composed
+   still frame. This just freezes the CSS fallback to match.
+   ============================================================ */
+.lb--still .lb__fb i { animation-play-state: paused; opacity: 0.7; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lb__fb i { animation-play-state: paused; opacity: 0.7; }
+}
