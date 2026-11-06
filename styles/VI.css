@@ -722,3 +722,15 @@ html.ul-hold .entrance,html.ul-hold .reveal.visible{animation-play-state:paused}
    where the mask hides it - this is not leaving that to inference. */
 @media(prefers-reduced-motion:reduce){.ul-sweep{display:none}}
 .motion-off .ul-sweep{display:none}
+
+/* ---------- image wordmarks ----------
+   The masthead and the hero name are artwork now, not live type. The name
+   keeps .name for its size, which tracks the responsive font sizes through
+   1em, and for the glints positioned on it. The chrome rim, drop and gloss
+   copies are pseudo-elements built from data-text, so they are switched off. */
+.site-logo{display:block;height:34px;width:auto;transition:filter .25s}
+.site-name:hover .site-logo{filter:drop-shadow(0 0 12px var(--glow-pink))}
+.name-logo img{display:block;height:1em;width:auto;transition:filter .35s ease}
+.name-logo:before,.name-logo:after{content:none}
+.name-logo:hover img{filter:drop-shadow(0 0 30px var(--glow-pink))}
+@media(max-width:650px){.site-logo{height:28px}}
